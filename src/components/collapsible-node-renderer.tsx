@@ -69,9 +69,7 @@ export const CollapsibleNodeRenderer = ({
                 text: `${indentSpaces}</${tagValue}>`,
             }
         }
-        if (type === NodeType.TEXT) {
-            return { lineNumber, text: `${indentSpaces}${value}` }
-        }
+        return { lineNumber, text: `${indentSpaces}${value}` }
     }
 
     const { lineNumber: openingLineNumber, text: openingTag } =
@@ -107,7 +105,6 @@ export const CollapsibleNodeRenderer = ({
             </NodeWrapper>
 
             {isOpen &&
-                children &&
                 children.map((child, index) => (
                     <CollapsibleNodeRenderer
                         key={index}

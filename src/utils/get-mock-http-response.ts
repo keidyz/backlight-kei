@@ -1,5 +1,47 @@
 const mockHttpResponses = [
     `
+HTTP/1.1 418 I'm a teapot
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 01 Jan 2025 00:00:00 GMT
+Content-Length: 29
+
+I'm a teapot, not a coffee machine!
+    `,
+    `
+HTTP/1.1 418 I'm a teapot
+Content-Type: text/html; charset=UTF-8
+Date: Wed, 01 Jun 2025 01:00:00 GMT
+Content-Length: 1231121
+
+<!DOCTYPE html>
+<html>
+<head>
+<title>I'm a teapot</title>
+</head>
+<body>
+<h1>418 I'm a teapot</h1>
+<p>This is a teapot, not a coffee machine!</p>
+</body>
+</html>
+    `,
+    `
+HTTP/1.1 403 Forbidden
+Content-Type: text/html; charset=UTF-8
+Date: Wed, 01 Jan 2025 00:00:00 GMT
+Content-Length: 99
+
+<!DOCTYPE html>
+<html>
+<head>
+<title>Blocked</title>
+</head>
+<body>
+<h1>Access Denied</h1>
+<p>This page is blocked by Windows Parental Controls. 👀</p>
+</body>
+</html>
+    `,
+    `
 HTTP/1.1 200 OK
 Content-Type: text/html; charset=UTF-8
 Date: Wed, 01 Jun 2025 00:00:00 GMT
@@ -12,7 +54,7 @@ Content-Length: 1234
 </head>
 <body>
 <h1>Welcome to the Mock Response</h1>
-<a href="https://example.com">Link</a>
+<a href="https://github.com/keidyz/backlight-kei">Link</a>
 <p>This is a sample response body.</p>
 </body>
 </html>
@@ -33,7 +75,7 @@ Content-Length: 567
 <table>
 <tr>
 <th>URL</th>
-<th>https://www.example.com/non-existent-page</th>
+<th>https://github.com/keidyz/ugabuga</th>
 </tr>
 </table>
 </body>
@@ -71,7 +113,7 @@ Content-Length: 234
 <body>
 <h1> Redirecting...</h1>
 <h2>You are being redirected to a new location.</h2>
-<p>If you are not redirected automatically, follow this <a href="https://www.example.com/new-location">link</a>.</p>
+<p>If you are not redirected automatically, follow this <a href="https://github.com/keidyz/backlight-kei">link</a>.</p>
 <p>Thank you for your patience.</p>
 </body>
 </html>
@@ -90,6 +132,6 @@ Content-Length: 56
 ]
 
 export const getRandomMockHttpResponse = () => {
-    const randomIndex = Math.floor(Math.random() * mockHttpResponses.length);
-    return mockHttpResponses[randomIndex].trim();
+    const randomIndex = Math.floor(Math.random() * mockHttpResponses.length)
+    return mockHttpResponses[randomIndex].trim()
 }

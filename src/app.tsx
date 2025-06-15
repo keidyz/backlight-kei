@@ -3,9 +3,7 @@ import styled from '@emotion/styled'
 import { BodyTab, HeadersTab } from './components'
 import { Button, Tabs, Heading, TextArea } from '@radix-ui/themes'
 import { bytesToHumanReadableSize } from './utils/data-converters'
-import {
-	getReasonPhrase,
-} from 'http-status-codes';
+import { getReasonPhrase } from 'http-status-codes'
 import { getRandomMockHttpResponse } from './utils/get-mock-http-response'
 
 interface ParsedHttpResponse {
@@ -87,14 +85,14 @@ const Title = styled(Heading)`
 `
 
 const dateTimeFormatter = new Intl.DateTimeFormat('sv-SE', {
-  year: 'numeric',
-  month: '2-digit',
-  day: '2-digit',
-  hour: '2-digit',
-  minute: '2-digit',
-  second: '2-digit',
-  hour12: false,
-});
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+    hour12: false,
+})
 
 export function App() {
     const [{ body, headers, statusCode }, setParsedHttpResponse] =
@@ -138,20 +136,30 @@ export function App() {
             headers,
             statusCode,
             body: splitResponse
-            .slice(bodyStartIndex + 1)
-            .join('\n')
-            .trim(),
+                .slice(bodyStartIndex + 1)
+                .join('\n')
+                .trim(),
         })
     }
 
-    const getStatusCodeDescription = (statusCode: number|string) => {
+    const formatDateAndTime = (dateString: string) => {
+        try {
+            const date = new Date(dateString)
+            return dateTimeFormatter.format(date)
+        } catch (error) {
+            console.error('Invalid date string:', dateString, error)
+            return ''
+        }
+    }
+
+    const getStatusCodeDescription = (statusCode: number | string) => {
         try {
             // @NOTE: getReasonPhrase throws if status code is invalid
             const description = getReasonPhrase(statusCode)
             return description
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        } catch(e) {
-            return '';
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        } catch (e) {
+            return ''
         }
     }
 
@@ -177,7 +185,14 @@ export function App() {
             <div>
                 <Button
                     onClick={() => {
-                        const mockResponse = getRandomMockHttpResponse()
+                        let mockResponse = getRandomMockHttpResponse()
+                        // I SWEAR I DO NOT CODE LIKE THIS
+                        // just a quick bandaid to ensure you get new
+                        // responses on click
+                        while(mockResponse === rawResponse) {
+                            mockResponse = getRandomMockHttpResponse()
+                        }
+
                         setRawResponse(mockResponse)
                     }}
                     variant="soft"
@@ -205,19 +220,23 @@ export function App() {
                     </Tabs.Root>
                     <InformationArea statusCode={statusCode || ''}>
                         {statusCode && (
-                            <StatusCode statusCode={statusCode} aria-label="HTTP Status Code" title="HTTP Status Code">
-                                {statusCode} {getStatusCodeDescription(statusCode)}
+                            <StatusCode
+                                statusCode={statusCode}
+                                aria-label="HTTP Status Code"
+                                title="HTTP Status Code"
+                            >
+                                {statusCode}{' '}
+                                {getStatusCodeDescription(statusCode)}
                             </StatusCode>
                         )}
                         <span aria-label="Content Type" title="Content Type">
                             {headers['date']
-                                ? dateTimeFormatter.format(new Date(headers['date']))
+                                ? formatDateAndTime(headers['date'])
                                 : ''}
                         </span>
                         <span aria-label="Content Type" title="Content Type">
                             {headers['content-type']
-                                ? headers['content-type'].split(';')[0]
-                                      .trim()
+                                ? headers['content-type'].split(';')[0].trim()
                                 : ''}
                         </span>
                         <span aria-label="Content Type" title="Content Type">
